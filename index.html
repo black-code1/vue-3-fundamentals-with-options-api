@@ -22,6 +22,7 @@
                 type="text"
                 v-model="newItem"
                 placeholder="Add an item">
+            <p class="counter">{{characterCount}}/200</p>
             <label>
                 <input type="checkbox" v-model="newItemHighPriority">
                 High Priority
@@ -36,29 +37,12 @@
         <p v-if="items.length === 0">Nice job! You've bought all your items!</p>
         <ul>
             <li
-                v-for="item in items"
+                v-for="item in reversedItems"
                 @click="togglePurchased(item)"
                 :key="item.id"
                 :class="{strikeout: item.purchased, priority: item.highPriority}"
                 class="static-class"
             >{{item.label}}</li>
-<!--            <li v-for="item in items"-->
-<!--                :key="item.id"-->
-<!--                :class="[-->
-<!--                item.purchased ? 'strikeout text-gray' : 'underlined',-->
-<!--                item.highPriority ? 'priority' : ''-->
-<!--                ]"-->
-<!--                class="static-class"-->
-<!--            >{{item.label}}</li>-->
-<!--            <li v-for="item in items"-->
-<!--                :key="item.id"-->
-<!--                :class="[-->
-<!--                {strikeout: item.purchased},-->
-<!--                {priority: item.highPriority},-->
-<!--                'static-class'-->
-<!--                ]"-->
-<!--                class="static-class"-->
-<!--            >{{item.label}}</li>-->
         </ul>
     </div>
     <script src="https://unpkg.com/vue@3"></script>
@@ -76,6 +60,12 @@
                         {id: 3, label:"20 cups", purchased: false, highPriority: true}
                     ]
                 }
+            },
+            computed: {
+                // computed property should alter or change data they should only transform data for our presentation layer
+              reversedItems(){
+                  return [...this.items].reverse()
+              }
             },
             methods: {
                 saveItem(){
